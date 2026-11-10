@@ -82,6 +82,10 @@ describe('ScanDocumentTool', (): void => {
     await rm(directory, { recursive: true, force: true });
   });
 
+  it('is served by the docscanner server', (): void => {
+    expect(client.getServerVersion()?.name).toBe('docscanner');
+  });
+
   it('is listed with its input and output schemas', async (): Promise<void> => {
     const { tools }: ListToolsResult = await client.listTools();
 

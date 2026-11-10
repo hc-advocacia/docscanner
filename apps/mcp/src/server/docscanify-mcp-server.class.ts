@@ -26,7 +26,7 @@ export interface DocScanifyMcpServerOptions {
 
 /** Creates the MCP servers of DocScanify, with their tools registered. */
 export class DocScanifyMcpServer {
-  public static readonly NAME: string = 'docscanify';
+  public static readonly NAME: string = 'docscanner';
 
   private readonly scanDocumentTool: ScanDocumentTool;
 
