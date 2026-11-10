@@ -251,7 +251,7 @@ describe('ResultPreview', (): void => {
       const lineWidth: number = guide.lineWidth as number;
       expect(lineWidth).toBeGreaterThanOrEqual(1);
       expect(lineWidth).toBeLessThan(3);
-      expect(guide.strokeStyle).toBe('#c5cad3');
+      expect(guide.strokeStyle).toBe('#d4c1af');
       expect(guide.lineDash).toHaveLength(2);
       expect(guide.lineDash.every((dash: number): boolean => dash > 0)).toBe(
         true,

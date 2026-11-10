@@ -30,7 +30,7 @@
   height: 100%;
   padding: 0;
   overflow: hidden;
-  background: var(--surface);
+  background: var(--surface-raised);
   border: 1px solid var(--line);
   transition:
     border-color 150ms var(--ease),
@@ -75,7 +75,7 @@ button.doc-tile-body {
 }
 
 .doc-tile-n {
-  background: rgba(16, 24, 40, 0.75);
+  background: rgba(42, 28, 20, 0.78);
 }
 
 .doc-tile.is-active .doc-tile-n {
@@ -84,7 +84,7 @@ button.doc-tile-body {
 
 .doc-tile-alert {
   background: var(--danger);
-  box-shadow: 0 0 0 2px #fff;
+  box-shadow: 0 0 0 2px var(--surface-raised);
   font-weight: 700;
 }
 
@@ -95,11 +95,11 @@ button.doc-tile-body {
   width: 20px;
   height: 20px;
   margin: -10px 0 0 -10px;
-  border: 2.5px solid #f1d5dc;
+  border: 2.5px solid var(--line);
   border-top-color: var(--brand);
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 3px #fff;
+  background: var(--surface-raised);
+  box-shadow: 0 0 0 3px var(--surface-raised);
   animation: spin 800ms linear infinite;
 }
 
@@ -138,7 +138,7 @@ button.doc-tile-body {
   }
 
   button.doc-tile-body:hover {
-    border-color: var(--muted);
+    border-color: var(--brand-light);
   }
 
   .doc-tile.is-active button.doc-tile-body:hover {
@@ -153,8 +153,8 @@ button.doc-tile-body {
   justify-items: center;
   width: 100%;
   height: 100%;
-  background: #e4e7ec;
-  border: 2px dashed #b9c0cb;
+  background: var(--surface);
+  border: 1.5px dashed var(--line-strong);
   text-align: center;
   transition:
     background-color 150ms var(--ease),
@@ -271,8 +271,7 @@ button.doc-tile-body {
 .is-large .add-tile-icon {
   width: 40px;
   height: 40px;
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
+  background: var(--brand-soft);
 }
 
 .is-large .add-tile-icon svg {
@@ -282,6 +281,10 @@ button.doc-tile-body {
 
 .is-large .add-tile-title {
   margin-bottom: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.15;
 }
 
 .is-large .add-tile-actions {
@@ -445,7 +448,7 @@ button.doc-tile-body {
 
 [data-sortable].is-dragging > * {
   transform: scale(1.06);
-  box-shadow: 0 14px 28px -8px rgba(16, 24, 40, 0.35);
+  box-shadow: 0 14px 28px -8px rgba(58, 36, 24, 0.35);
   transition:
     transform 150ms var(--ease),
     box-shadow 150ms var(--ease);
@@ -474,8 +477,37 @@ button.doc-tile-body {
     grid-template-columns: repeat(2, 40px);
   }
 
+  /* The tile is only 12rem tall: a smaller icon and title, and no drop hint, so the buttons fit */
   .is-large .add-tile {
+    gap: 0.45rem;
     padding: 0.75rem 0.6rem;
+  }
+
+  .is-large .add-tile-head {
+    gap: 0.35rem;
+  }
+
+  .is-large .add-tile-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .is-large .add-tile-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .is-large .add-tile-title {
+    margin-bottom: 0;
+    font-size: 1.15rem;
+  }
+
+  .is-large .add-tile-actions {
+    gap: 0.4rem;
+  }
+
+  .is-large .add-tile-hint {
+    display: none;
   }
 
   .is-large ol {

@@ -52,7 +52,7 @@ The app guides the user through four steps, shown in the top bar.
 
 - **Private.** Nothing is uploaded to a server.
 - **Works offline and installs as an app** (PWA), with a notice when a new version is available.
-- **English, Spanish and Brazilian Portuguese**, picked from the browser languages and changeable in the top bar.
+- **Brazilian Portuguese**, fixed: the app ignores the browser languages and has no language picker. English and Spanish are still translated and come back by turning off `FIXED_LOCALE` (see below).
 
 ## Installation
 
@@ -201,7 +201,7 @@ The steps and the carousel of the session read the contexts (`useSteps`, `useSca
 - **OpenCV on demand.** OpenCV.js has about 9 MB, so it stays out of the bundle. It is loaded from `opencv.js` on the first detection.
 - **Rendered once.** Each render (the document cropped and adjusted) is cached as PNG, keyed by the document, its corners and its adjustments. The preview, the thumbnails and the export all go through this cache, so moving between documents and steps does not render again; only a new crop or adjustment does.
 - **Export.** Each document is encoded by DocScanify. Single PDFs are merged with [pdf-lib](https://pdf-lib.js.org/), and ZIP files are made with [fflate](https://github.com/101arrowz/fflate).
-- **Languages.** The first language is the one picked before in the top bar, then the first browser language the app supports (regional variants fall back to the closest one, such as `pt-PT` → `pt-BR`), then `DEFAULT_LOCALE` from `src/i18n/locale.ts`. The `lang`, the description and the manifest of the page follow the language. Before the app starts, which is also what crawlers and link previews read, they are the ones of `DEFAULT_LOCALE`, added to `index.html` by `plugins/webManifest.ts` from the messages of that language. Changing `DEFAULT_LOCALE` is enough to change them.
+- **Languages.** With `FIXED_LOCALE` on in `src/i18n/locale.ts` (the default), the app always uses `DEFAULT_LOCALE` (`pt-BR`) and the top bar has no language picker. With it off, the first language is the one picked before in the top bar, then the first browser language the app supports (regional variants fall back to the closest one, such as `pt-PT` → `pt-BR`), then `DEFAULT_LOCALE` from `src/i18n/locale.ts`. The `lang`, the description and the manifest of the page follow the language. Before the app starts, which is also what crawlers and link previews read, they are the ones of `DEFAULT_LOCALE`, added to `index.html` by `plugins/webManifest.ts` from the messages of that language. Changing `DEFAULT_LOCALE` is enough to change them.
 - **Installable.** Each language has its own web app manifest, so the installed app shows its description in the user's language. They all share the same `id`, so switching languages does not create another app.
 - **Offline and updates.** A service worker from [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) keeps every file of the build after the first visit. A new version is downloaded in the background and announced with an **Update** button. The app never reloads by itself, because the documents being edited only exist in the page memory: closing the notice keeps the current version until the app is opened again. An app left open checks for new versions every hour.
 

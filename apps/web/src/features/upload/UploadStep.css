@@ -1,3 +1,22 @@
+/* Soft copper light from the top right and a fainter one from the bottom left, over cream that
+   deepens downwards. On the whole stage, past its padding, so no edge of the glow shows. The
+   ellipses have a fixed size and fade out well inside it: on a narrow phone they stay soft
+   washes instead of turning into tall blobs */
+.stage:has(> .upload-screen) {
+  background:
+    radial-gradient(
+      900px 520px at 82% 0%,
+      rgba(224, 168, 119, 0.3),
+      transparent 62%
+    ),
+    radial-gradient(
+      720px 600px at 6% 100%,
+      rgba(176, 106, 62, 0.13),
+      transparent 58%
+    ),
+    linear-gradient(180deg, var(--surface) 0%, var(--canvas) 100%);
+}
+
 .upload-screen {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -18,9 +37,10 @@
   place-content: center;
   justify-items: center;
   gap: 0.6rem;
-  background: #e4e7ec;
-  border: 2px dashed #b9c0cb;
+  background: var(--surface-raised);
+  border: 1.5px dashed var(--line-strong);
   border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
   color: var(--text-2);
   text-align: center;
   transition:
@@ -54,9 +74,11 @@
 
 .upload-heading {
   margin: 0;
-  font-size: var(--fs-display);
-  font-weight: 650;
-  letter-spacing: -0.025em;
+  font-family: var(--font-display);
+  font-size: 2.125rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
 .upload-sub {
@@ -80,12 +102,13 @@
 }
 
 .upload-title {
-  max-width: 24rem;
+  max-width: 26rem;
   margin: 0;
-  font-size: var(--fs-display);
-  font-weight: 650;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
   color: var(--text);
   text-wrap: balance;
 }
@@ -93,7 +116,8 @@
 .upload-text {
   max-width: 26rem;
   margin: 0;
-  color: var(--text-2);
+  font-size: 1rem;
+  color: var(--muted);
   text-wrap: pretty;
 }
 
@@ -132,6 +156,7 @@
   text-wrap: balance;
 }
 
+/* Copper lock; the text keeps the darker secondary color, readable over the glow */
 .upload-privacy svg {
   display: inline-block;
   width: 14px;
@@ -139,7 +164,7 @@
   margin-right: 0.35rem;
   vertical-align: -2px;
   fill: none;
-  stroke: currentColor;
+  stroke: var(--brand-accent);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -156,9 +181,12 @@
     gap: 1rem;
   }
 
-  .upload-heading,
+  .upload-heading {
+    font-size: 1.75rem;
+  }
+
   .upload-title {
-    font-size: 1.375rem;
+    font-size: 2rem;
   }
 
   .upload-footer .btn {
@@ -199,6 +227,10 @@
 
   .add-card-large {
     padding: 1.5rem 1.25rem 1.25rem;
+  }
+
+  .upload-title {
+    font-size: 1.875rem;
   }
 }
 

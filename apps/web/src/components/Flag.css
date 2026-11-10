@@ -4,5 +4,5 @@
   height: 14px;
   border-radius: 3px;
   /* Hairline border: white areas of a flag would vanish on a white background */
-  box-shadow: 0 0 0 1px rgba(16, 24, 40, 0.12);
+  box-shadow: 0 0 0 1px rgba(58, 36, 24, 0.14);
 }

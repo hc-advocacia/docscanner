@@ -21,7 +21,7 @@ const DETECTION_TOLERANCE: number = 10;
 const DRAG_TOLERANCE: number = 3;
 
 const CROSSED_MESSAGE: string =
-  'The corners are crossed. Drag them to form a quadrilateral.';
+  'Os cantos estão cruzados. Arraste-os para formar um quadrilátero.';
 
 /** How long a toast stays on screen before it goes away by itself, in ms. */
 const TOAST_DURATION: number = 6_000;
@@ -202,7 +202,7 @@ test.describe('Crop step', (): void => {
     ).toBeLessThan(DETECTION_TOLERANCE);
 
     await expect(page.getByTestId('detect-status')).toHaveText(
-      'Move the corners to frame the part of the image you want to scan',
+      'Mova os cantos para enquadrar a área da imagem que deseja escanear',
     );
     await expect(cropContinue(page)).toBeEnabled();
     await expect(alertMark(page, 0)).toHaveCount(0);
@@ -357,7 +357,9 @@ test.describe('Crop step', (): void => {
     const dragged: Quad = await dragCorner(page, 3, { x: 100, y: -120 });
     expect(maxCornerError(dragged, detected)).toBeGreaterThan(150);
 
-    await page.getByRole('button', { name: 'Detect automatically' }).click();
+    await page
+      .getByRole('button', { name: 'Detectar automaticamente' })
+      .click();
 
     await expect
       .poll(async (): Promise<number> =>
@@ -403,7 +405,7 @@ test.describe('Crop step', (): void => {
   }): Promise<void> => {
     await openCrop(page, ['invoice.jpg']);
     const tile: Locator = page.getByTestId('doc-0');
-    await expect(tile).toHaveAccessibleName('Document 1');
+    await expect(tile).toHaveAccessibleName('Documento 1');
 
     const delta: Point = await crossInvoiceCorners(page);
 
@@ -412,7 +414,9 @@ test.describe('Crop step', (): void => {
     await expect(error).toHaveText(CROSSED_MESSAGE);
     await expect(error).toHaveAttribute('role', 'alert');
     await expect(alertMark(page, 0)).toHaveText('!');
-    await expect(tile).toHaveAccessibleName('Document 1, needs a crop fix');
+    await expect(tile).toHaveAccessibleName(
+      'Documento 1, precisa de ajuste no recorte',
+    );
     await expect(cropContinue(page)).toBeDisabled();
     // Neither can the top bar skip ahead
     await expect(page.getByTestId('step-2')).toBeDisabled();
@@ -424,7 +428,7 @@ test.describe('Crop step', (): void => {
     // The toasts do not go away by themselves here: the fix took it away
     await expect(error).toHaveCount(0);
     await expect(alertMark(page, 0)).toHaveCount(0);
-    await expect(tile).toHaveAccessibleName('Document 1');
+    await expect(tile).toHaveAccessibleName('Documento 1');
     await expect(cropContinue(page)).toBeEnabled();
     await expect(page.getByTestId('step-2')).toBeEnabled();
 
@@ -445,7 +449,7 @@ test.describe('Crop step', (): void => {
     const error: Locator = toasts(page, 'error');
     await expect(error).toHaveCount(1);
 
-    await page.getByRole('button', { name: 'Close message' }).click();
+    await page.getByRole('button', { name: 'Fechar aviso' }).click();
     await expect(error).toHaveCount(0);
 
     // Still crossed after this drag
@@ -499,7 +503,7 @@ test.describe('Crop step', (): void => {
     await expect(toasts(page, 'error')).toHaveCount(0);
     const warning: Locator = toasts(page, 'warning');
     await expect(warning).toHaveText(
-      '1 document needs a crop fix. It is marked with ! in the list.',
+      '1 documento precisa de ajuste no recorte. Ele está marcado com ! na lista.',
     );
     await expect(alertMark(page, 0)).toHaveText('!');
     await expect(alertMark(page, 1)).toHaveCount(0);
@@ -603,7 +607,7 @@ test.describe('Crop step', (): void => {
     await openCrop(page, ['invoice.jpg', 'receipt.jpg']);
     const dragged: Quad = await dragCorner(page, 0, { x: 80, y: 60 });
 
-    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await page.getByRole('button', { name: 'Voltar', exact: true }).click();
 
     await expect(page.getByTestId('step-0')).toHaveAttribute(
       'aria-current',
@@ -611,7 +615,7 @@ test.describe('Crop step', (): void => {
     );
     await expect(page.getByTestId('corner-editor')).toHaveCount(0);
     await expect(
-      page.getByRole('heading', { name: 'You uploaded 2 images' }),
+      page.getByRole('heading', { name: 'Você enviou 2 imagens' }),
     ).toBeVisible();
     await expect(documentTiles(page)).toHaveCount(2);
     await expect(page.getByTestId('upload-continue')).toBeEnabled();

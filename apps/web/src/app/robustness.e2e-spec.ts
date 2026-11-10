@@ -45,7 +45,7 @@ const DETECTION_TOLERANCE: number = 10;
 /** How far, in photo pixels, a corner put back on the image corners may be from them. */
 const IMAGE_CORNER_TOLERANCE: number = 3;
 
-const DETECTOR_ERROR: string = 'The edge detector could not be loaded';
+const DETECTOR_ERROR: string = 'Não foi possível carregar o detector de bordas';
 
 /** The corners of the whole `blank.png` photo, 800 × 600, clockwise from the top left. */
 const BLANK_IMAGE_CORNERS: Quad = [
@@ -191,9 +191,9 @@ async function dragCorner(
   await expect(page.getByTestId('loupe')).toHaveCount(0);
 }
 
-/** The button named exactly "Continue", which moves to the next step. */
+/** The button named exactly "Continuar" (Continue), which moves to the next step. */
 function continueButton(page: Page): Locator {
-  return page.getByRole('button', { name: 'Continue', exact: true });
+  return page.getByRole('button', { name: 'Continuar', exact: true });
 }
 
 test.describe('Files dropped outside the drop zones', () => {
@@ -361,7 +361,9 @@ test.describe('Edge detector that fails to load', () => {
     await expect(continueButton(page)).toBeDisabled();
 
     await page.unroute('**/opencv.js', blockOpenCv);
-    await page.getByRole('button', { name: 'Detect automatically' }).click();
+    await page
+      .getByRole('button', { name: 'Detectar automaticamente' })
+      .click();
 
     await expect(page.getByTestId('corner-editor')).toBeVisible({
       timeout: 60_000,
@@ -408,7 +410,7 @@ test.describe('Privacy', () => {
     });
 
     await openAdjust(page, ['invoice.jpg']);
-    await choose(page, 'Black and white');
+    await choose(page, 'Preto e branco');
     await resultSize(page);
     await page.getByTestId('continue').click();
     await expect(page.getByTestId('download')).toBeEnabled();
@@ -472,7 +474,9 @@ test.describe('Detection on a photo without a document', () => {
     expect(dragged[0].x).toBeGreaterThan(150);
     expect(dragged[0].y).toBeGreaterThan(100);
 
-    await page.getByRole('button', { name: 'Detect automatically' }).click();
+    await page
+      .getByRole('button', { name: 'Detectar automaticamente' })
+      .click();
     await expect
       .poll(async (): Promise<number> =>
         maxCornerError(await editorCorners(page), BLANK_IMAGE_CORNERS),

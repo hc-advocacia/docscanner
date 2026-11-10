@@ -1,13 +1,13 @@
 .spinner {
   width: 44px;
   height: 44px;
-  border: 3.5px solid #f1d5dc;
+  border: 3.5px solid var(--brand-soft);
   border-top-color: var(--brand);
   border-radius: 50%;
   /* White disc: the preview behind it may be any color */
-  background: #fff;
+  background: var(--surface-raised);
   box-shadow:
-    0 0 0 7px #fff,
+    0 0 0 7px var(--surface-raised),
     var(--shadow-md);
   animation: spin 800ms linear infinite;
 }

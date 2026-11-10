@@ -6,13 +6,16 @@
   min-height: 44px;
   padding: 0.6rem 1.25rem;
   border: 1px solid transparent;
-  border-radius: var(--radius-control);
-  font-weight: 600;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  letter-spacing: 0.01em;
   cursor: pointer;
   transition:
     background-color 150ms var(--ease),
     border-color 150ms var(--ease),
-    color 150ms var(--ease);
+    color 150ms var(--ease),
+    box-shadow 200ms var(--ease),
+    transform 200ms var(--ease);
 }
 
 .btn:disabled {
@@ -38,50 +41,62 @@
 }
 
 .btn-primary {
-  background: var(--brand);
+  background: var(--brand-gradient) border-box;
   color: var(--on-brand);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-brand);
+}
+
+/* Disabled: flat, without the shadow that makes it look pressable */
+.btn-primary:disabled {
+  box-shadow: none;
 }
 
 .btn-primary:not(:disabled):active {
-  background: var(--brand-press);
+  background-image: var(--brand-gradient-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
-  background: var(--surface);
+  background: var(--surface-raised);
   border-color: var(--line-strong);
-  color: var(--text);
+  color: var(--brand-press);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:not(:disabled):active {
-  background: var(--surface-sunken);
+  background: var(--brand-soft);
+  border-color: var(--brand-light);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--text-2);
-  font-weight: 500;
 }
 
 .btn-ghost:not(:disabled):active {
-  background: var(--surface-sunken);
-  color: var(--text);
+  background: var(--brand-soft);
+  color: var(--brand-press);
 }
 
 /* Mouse only: on touch screens, hover sticks to the last tapped button */
 @media (hover: hover) {
   .btn-primary:not(:disabled):hover {
-    background: var(--brand-hover);
+    background-image: var(--brand-gradient-hover);
+    transform: translateY(-2px);
+  }
+
+  .btn-primary:not(:disabled):active {
+    transform: translateY(0);
   }
 
   .btn-secondary:not(:disabled):hover {
-    background: var(--surface-sunken);
+    background: var(--brand-soft);
+    border-color: var(--brand-light);
   }
 
   .btn-ghost:not(:disabled):hover {
-    background: var(--surface-sunken);
-    color: var(--text);
+    background: var(--brand-soft);
+    color: var(--brand-press);
   }
 }
 
@@ -93,13 +108,17 @@
   border: 0;
 }
 
+/* Small uppercase eyebrow. --brand rather than --brand-accent: small text needs 4.5:1 on cream */
 .field legend,
 .field-label {
   padding: 0;
   margin-bottom: 0.5rem;
-  font-size: var(--fs-small);
-  font-weight: 550;
-  color: var(--text-2);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand);
 }
 
 /* 16px: below that, Safari on iPhone zooms in on focus */
@@ -108,7 +127,7 @@ input[type='number'] {
   width: 100%;
   min-height: 44px;
   padding: 0.55rem 0.8rem;
-  background: var(--surface);
+  background: var(--surface-raised);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-control);
   box-shadow: var(--shadow-sm);
@@ -116,6 +135,17 @@ input[type='number'] {
   transition:
     border-color 150ms var(--ease),
     box-shadow 150ms var(--ease);
+}
+
+/* Copper chevron instead of the native arrow, which sits tight against the edge */
+select {
+  padding-right: 2.5rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a4e30' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 0.85rem center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  cursor: pointer;
 }
 
 select:focus-visible,

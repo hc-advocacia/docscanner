@@ -25,14 +25,14 @@ const LOCALES_DIR: string = 'src/i18n/locales';
 /** What every language's manifest shares. */
 const SHARED: Record<string, unknown> = {
   id: './',
-  name: 'DocScanify',
-  short_name: 'DocScanify',
+  name: 'DocScanner',
+  short_name: 'DocScanner',
   start_url: './',
   scope: './',
   display: 'standalone',
   orientation: 'any',
-  background_color: '#ffffff',
-  theme_color: '#ffffff',
+  background_color: '#fcf8f3',
+  theme_color: '#fcf8f3',
   categories: ['productivity', 'utilities'],
   icons: [
     { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
@@ -382,7 +382,7 @@ describe('webManifest', (): void => {
 
   describe('index.html', (): void => {
     const INDEX: string =
-      '<!doctype html>\n<html>\n  <head>\n    <title>DocScanify</title>\n  </head>\n</html>';
+      '<!doctype html>\n<html>\n  <head>\n    <title>DocScanner</title>\n  </head>\n</html>';
 
     it(`adds the language of DEFAULT_LOCALE (${DEFAULT_LOCALE}) to <html>`, (): void => {
       const { html }: IndexHtml = transformIndexHtml(

@@ -110,7 +110,7 @@ describe('Loupe', (): void => {
     );
 
     // Background first, then the image: 128 / 2.5 = 51.2 image units centered on (100, 200)
-    expect(context.of('fillRect')).toEqual([[0, 0, 128, 128, '#eef0f3']]);
+    expect(context.of('fillRect')).toEqual([[0, 0, 128, 128, '#f3ebe2']]);
     const draws: Call[] = context.of('drawImage');
     expect(draws).toHaveLength(1);
     expect(draws[0][0]).toBe(image);
@@ -143,7 +143,7 @@ describe('Loupe', (): void => {
     expect(sy).toBeCloseTo(348.8);
   });
 
-  it('draws the two edges that meet at the corner, a white halo then the burgundy line', (): void => {
+  it('draws the two edges that meet at the corner, a white halo then the copper line', (): void => {
     render(
       <Loupe
         image={image}
@@ -164,8 +164,8 @@ describe('Loupe', (): void => {
     ];
     expect(context.of('stroke')).toEqual([
       [5, '#ffffff'],
-      [2.5, '#840623'],
-      [1, 'rgba(16,24,40,.85)'],
+      [2.5, '#8a4e30'],
+      [1, 'rgba(42,28,20,.85)'],
     ]);
     expect(context.lineJoin).toBe('round');
     const moves: Call[] = context.of('moveTo');
@@ -236,8 +236,8 @@ describe('Loupe', (): void => {
     expect(loupe.style.width).toBe('128px');
     expect(context.of('stroke')).toEqual([
       [10, '#ffffff'],
-      [5, '#840623'],
-      [2, 'rgba(16,24,40,.85)'],
+      [5, '#8a4e30'],
+      [2, 'rgba(42,28,20,.85)'],
     ]);
     expect(context.of('moveTo').slice(2)).toEqual([
       [108, 128],

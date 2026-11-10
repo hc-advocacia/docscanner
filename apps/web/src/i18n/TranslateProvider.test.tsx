@@ -67,9 +67,9 @@ function Probe(): JSX.Element {
 }
 
 /** Renders the provider around {@link Probe}. */
-const renderProvider = (defaultLocale?: Locale): void => {
+const renderProvider = (defaultLocale?: Locale, fixed?: boolean): void => {
   render(
-    <TranslateProvider defaultLocale={defaultLocale}>
+    <TranslateProvider defaultLocale={defaultLocale} fixed={fixed}>
       <Probe />
     </TranslateProvider>,
   );
@@ -263,6 +263,42 @@ describe('TranslateProvider', (): void => {
       expect(second.locale).toBe('es');
       expect(second.setLocale).toBe(first.setLocale);
       expect(second.t).not.toBe(first.t);
+    });
+  });
+
+  describe('fixed', (): void => {
+    it('is off by default: the language follows the browser and can be changed', (): void => {
+      browserLanguages('es-MX');
+      renderProvider('pt-BR');
+
+      expect(currentValue().fixed).toBe(false);
+      expect(screen.getByTestId('locale')).toHaveTextContent(/^es$/);
+    });
+
+    it('always starts in defaultLocale, ignoring the browser languages and the previous choice', (): void => {
+      browserLanguages('en-US', 'es');
+      localStorage.setItem(STORAGE_KEY, 'es');
+      renderProvider('pt-BR', true);
+
+      expect(currentValue().fixed).toBe(true);
+      expect(screen.getByTestId('locale')).toHaveTextContent(/^pt-BR$/);
+      expect(screen.getByTestId('back')).toHaveTextContent(/^Voltar$/);
+      expect(document.documentElement.lang).toBe('pt-BR');
+      expect(description()).toBe(MESSAGES['pt-BR'].app.description);
+      expect(manifest()).toBe(manifestHref('pt-BR'));
+    });
+
+    it('ignores setLocale and stores no choice', async (): Promise<void> => {
+      const user: UserEvent = userEvent.setup();
+      browserLanguages('en-US');
+      renderProvider('pt-BR', true);
+
+      await user.click(screen.getByRole('button', { name: 'use en' }));
+
+      expect(screen.getByTestId('locale')).toHaveTextContent(/^pt-BR$/);
+      expect(screen.getByTestId('back')).toHaveTextContent(/^Voltar$/);
+      expect(document.documentElement.lang).toBe('pt-BR');
+      expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
     });
   });
 });

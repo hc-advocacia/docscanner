@@ -19,33 +19,45 @@ interface Props {
   children: ReactNode;
   /** Language used when no browser language is supported. Defaults to `DEFAULT_LOCALE`. */
   defaultLocale?: Locale;
+  /**
+   * Always uses `defaultLocale`, ignoring the browser languages and the user's previous choice,
+   * and ignores `setLocale`. The app passes `FIXED_LOCALE`.
+   */
+  fixed?: boolean;
 }
 
 /**
  * Provides the current language and its translate function to the app. The language starts as
- * the user's previous choice or the best browser match. `<html lang>`, the page description, and
- * the app manifest follow it.
+ * the user's previous choice or the best browser match, unless it is `fixed`. `<html lang>`, the
+ * page description, and the app manifest follow it.
  */
 export function TranslateProvider({
   children,
   defaultLocale = DEFAULT_LOCALE,
+  fixed = false,
 }: Props): JSX.Element {
-  const [locale, setLocaleState] = useState<Locale>(() =>
-    detectLocale(defaultLocale),
+  const [chosen, setChosen] = useState<Locale>(() =>
+    fixed ? defaultLocale : detectLocale(defaultLocale),
   );
+  const locale: Locale = fixed ? defaultLocale : chosen;
 
-  const setLocale: (next: Locale) => void = useCallback((next: Locale) => {
-    storeLocale(next);
-    setLocaleState(next);
-  }, []);
+  const setLocale: (next: Locale) => void = useCallback(
+    (next: Locale) => {
+      if (fixed) return;
+      storeLocale(next);
+      setChosen(next);
+    },
+    [fixed],
+  );
 
   const value: TranslateContextValue = useMemo(
     () => ({
       locale,
+      fixed,
       setLocale,
       t: createTranslate(locale, MESSAGES[locale], MESSAGES[defaultLocale]),
     }),
-    [locale, setLocale, defaultLocale],
+    [locale, fixed, setLocale, defaultLocale],
   );
 
   // The page language, its description, and the app manifest follow the current language. The

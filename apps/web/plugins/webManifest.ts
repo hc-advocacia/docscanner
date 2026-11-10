@@ -55,14 +55,14 @@ const LOCALES_DIR: string = 'src/i18n/locales';
  */
 const SHARED: SharedManifest = {
   id: './',
-  name: 'DocScanify',
-  short_name: 'DocScanify',
+  name: 'DocScanner',
+  short_name: 'DocScanner',
   start_url: './',
   scope: './',
   display: 'standalone',
   orientation: 'any',
-  background_color: '#ffffff',
-  theme_color: '#ffffff',
+  background_color: '#fcf8f3',
+  theme_color: '#fcf8f3',
   categories: ['productivity', 'utilities'],
   icons: [
     { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },

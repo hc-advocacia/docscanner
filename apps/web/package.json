@@ -1,6 +1,6 @@
 {
   "name": "@devantage/docscanify/web",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Detect, crop and correct the perspective of documents in images directly from your browser",
   "contributors": [

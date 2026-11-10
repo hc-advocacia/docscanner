@@ -20,8 +20,11 @@ interface Props {
 
 const PAGE_COLOR: string = '#fff';
 
-/** Light enough to stay in the background, dark enough to show on a white document. */
-const MARGIN_GUIDE_COLOR: string = '#c5cad3';
+/**
+ * Light enough to stay in the background, dark enough to show on a white document. Same warm tone
+ * as `--line-strong`.
+ */
+const MARGIN_GUIDE_COLOR: string = '#d4c1af';
 
 /** Width of the margin guide, as a share of the longest side of the page. */
 const MARGIN_GUIDE_WIDTH: number = 0.0015;

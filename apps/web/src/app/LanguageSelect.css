@@ -9,11 +9,12 @@
   gap: 0.4rem;
   min-height: 36px;
   padding: 0.3rem 0.55rem 0.3rem 0.6rem;
-  background: var(--surface);
+  background: var(--surface-raised);
   border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: var(--fs-small);
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   color: var(--text-2);
   cursor: pointer;
   transition:
@@ -45,8 +46,9 @@
 
 @media (hover: hover) {
   .language-button:hover {
-    background: var(--surface-sunken);
-    color: var(--text);
+    background: var(--brand-soft);
+    border-color: var(--brand-light);
+    color: var(--brand-press);
   }
 }
 
@@ -59,12 +61,12 @@
   margin: 0;
   padding: 0.3rem;
   list-style: none;
-  background: var(--surface);
+  background: var(--surface-raised);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 14px;
   box-shadow:
-    0 16px 32px -8px rgba(16, 24, 40, 0.18),
-    0 4px 8px -4px rgba(16, 24, 40, 0.08);
+    0 18px 36px -10px rgba(58, 36, 24, 0.22),
+    0 4px 8px -4px rgba(58, 36, 24, 0.08);
   transform-origin: top right;
   animation: language-in 140ms var(--ease);
 }
@@ -88,7 +90,7 @@
 }
 
 .language-option.is-active {
-  background: var(--surface-sunken);
+  background: var(--brand-soft);
 }
 
 .language-list:focus-visible .language-option.is-active {
@@ -96,7 +98,8 @@
 }
 
 .language-option[aria-selected='true'] {
-  font-weight: 600;
+  font-weight: 500;
+  color: var(--brand-press);
 }
 
 .language-name {

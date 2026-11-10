@@ -69,13 +69,16 @@ function expectSizeNear(actual: Size, expected: Size): void {
 }
 
 /** Rotates the document on display a quarter turn. */
-async function rotate(page: Page, direction: 'Left' | 'Right'): Promise<void> {
+async function rotate(
+  page: Page,
+  direction: 'Esquerda' | 'Direita',
+): Promise<void> {
   await page.getByRole('button', { name: direction, exact: true }).click();
 }
 
-/** Clicks the button named exactly "Back", which returns to the previous step. */
+/** Clicks the button named exactly "Voltar" (Back), which returns to the previous step. */
 async function clickBack(page: Page): Promise<void> {
-  await page.getByRole('button', { name: 'Back', exact: true }).click();
+  await page.getByRole('button', { name: 'Voltar', exact: true }).click();
 }
 
 /** The top bar marks the step at this position, from 0, as the current one. */
@@ -232,8 +235,8 @@ test.describe('Renders after changes', (): void => {
     await openAdjust(page, ['invoice.jpg']);
     const original: Size = await resultSize(page);
 
-    await choose(page, 'Black and white');
-    await rotate(page, 'Right');
+    await choose(page, 'Preto e branco');
+    await rotate(page, 'Direita');
     await expect(resultStatus(page)).toHaveText(
       sizeText(swapped(original)),
       RENDER_TIMEOUT,
@@ -255,7 +258,7 @@ test.describe('Renders after changes', (): void => {
 
     // The same adjustments, on the new crop: still black and white, still a quarter turn
     await expect(
-      page.getByRole('radio', { name: 'Black and white', exact: true }),
+      page.getByRole('radio', { name: 'Preto e branco', exact: true }),
     ).toBeChecked();
     await expect(page.getByTestId('result')).toHaveAttribute(
       'data-filter',
@@ -300,8 +303,8 @@ test.describe('Renders after changes', (): void => {
     expect(invoice.width).toBeLessThan(invoice.height);
 
     // Grayscale and a quarter turn on the invoice only
-    await choose(page, 'Grayscale');
-    await rotate(page, 'Right');
+    await choose(page, 'Cinza');
+    await rotate(page, 'Direita');
     await expect
       .poll(thumbnailSpread(page, 0), RENDER_TIMEOUT)
       .toBeLessThanOrEqual(2);
@@ -316,8 +319,8 @@ test.describe('Renders after changes', (): void => {
     // Copied to the receipt, which is not on display: its thumbnail turns gray, not rotated
     await page.getByTestId('apply-all').click();
     await expect(
-      page.getByTestId('toast').filter({ hasText: 'adjustments' }),
-    ).toHaveText('The adjustments were applied to all 2 documents.');
+      page.getByTestId('toast').filter({ hasText: 'ajustes' }),
+    ).toHaveText('Os ajustes foram aplicados aos 2 documentos.');
     await expect
       .poll(thumbnailSpread(page, 1), RENDER_TIMEOUT)
       .toBeLessThanOrEqual(2);
@@ -409,7 +412,7 @@ test.describe('Renders after changes', (): void => {
     expect((await seenTransients(page)).selectors).toEqual([]);
 
     // A new adjustment is a new render: it shows the loading state
-    await choose(page, 'Grayscale');
+    await choose(page, 'Cinza');
     await expect
       .poll(
         async (): Promise<number> =>
@@ -428,9 +431,10 @@ test.describe('Renders after changes', (): void => {
   }: {
     page: Page;
   }): Promise<void> => {
-    // Known bug: showing a cached render of another document flashes "Document 2 of 2 · Applying…"
-    // in the status, for as long as the cached PNG takes to decode, with the canvas still showing
-    // the previous document. Nothing is applied: the render is already done
+    // Known bug: showing a cached render of another document flashes
+    // "Documento 2 de 2 · Aplicando…" in the status, for as long as the cached PNG takes to
+    // decode, with the canvas still showing the previous document. Nothing is applied: the render
+    // is already done
     test.fail();
     await openAdjust(page, ['invoice.jpg', 'receipt.jpg']);
     const invoice: Size = await resultSize(page);
@@ -438,24 +442,24 @@ test.describe('Renders after changes', (): void => {
     const receipt: Size = await resultSize(page);
     await showDocument(page, 0);
     await expect(resultStatus(page)).toHaveText(
-      `Document 1 of 2 · ${sizeText(invoice)}`,
+      `Documento 1 de 2 · ${sizeText(invoice)}`,
     );
 
     await watchTransients(page, [SPINNER, BUSY_PREVIEW]);
     await showDocument(page, 1);
     await expect(resultStatus(page)).toHaveText(
-      `Document 2 of 2 · ${sizeText(receipt)}`,
+      `Documento 2 de 2 · ${sizeText(receipt)}`,
     );
     await showDocument(page, 0);
     await expect(resultStatus(page)).toHaveText(
-      `Document 1 of 2 · ${sizeText(invoice)}`,
+      `Documento 1 de 2 · ${sizeText(invoice)}`,
     );
 
-    // Straight from one size to the other, with no "Applying…" in between
+    // Straight from one size to the other, with no "Aplicando…" in between
     expect((await seenTransients(page)).statuses).toEqual([
-      `Document 1 of 2 · ${sizeText(invoice)}`,
-      `Document 2 of 2 · ${sizeText(receipt)}`,
-      `Document 1 of 2 · ${sizeText(invoice)}`,
+      `Documento 1 de 2 · ${sizeText(invoice)}`,
+      `Documento 2 de 2 · ${sizeText(receipt)}`,
+      `Documento 1 de 2 · ${sizeText(invoice)}`,
     ]);
   });
 });

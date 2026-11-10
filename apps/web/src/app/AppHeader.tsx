@@ -12,12 +12,12 @@ import { useTranslate } from '@/i18n';
 import { LanguageSelect } from './LanguageSelect';
 
 /**
- * Top bar: the brand, the steps (finished ones checked), and the language picker. Steps open only
- * once the previous ones are done, and none while images are imported. Opening a step, even the
- * current one, closes the camera.
+ * Top bar: the brand, the steps (finished ones checked), and the language picker, unless the
+ * language is fixed. Steps open only once the previous ones are done, and none while images are
+ * imported. Opening a step, even the current one, closes the camera.
  */
 export function AppHeader(): JSX.Element {
-  const { t } = useTranslate();
+  const { t, fixed } = useTranslate();
   const { step, goTo } = useSteps();
   const camera: CameraContextValue = useCamera();
   const { documents, invalidCount, importProgress } = useScan();
@@ -30,7 +30,7 @@ export function AppHeader(): JSX.Element {
     <header className="topbar">
       <span className="brand">
         <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" aria-hidden />
-        <span className="brand-name">DocScanify</span>
+        <span className="brand-name">DocScanner</span>
       </span>
       <ol className="steps" aria-label={t('app.steps')}>
         {STEPS.map((item: (typeof STEPS)[number], i: number) => (
@@ -59,7 +59,7 @@ export function AppHeader(): JSX.Element {
           </li>
         ))}
       </ol>
-      <LanguageSelect />
+      {!fixed && <LanguageSelect />}
     </header>
   );
 }

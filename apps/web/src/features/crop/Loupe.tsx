@@ -49,7 +49,7 @@ export function Loupe({
       y: (p.y - c.y) * s + canvas.height / 2,
     });
 
-    ctx.fillStyle = '#eef0f3';
+    ctx.fillStyle = '#f3ebe2';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.imageSmoothingEnabled = true;
     ctx.drawImage(
@@ -67,11 +67,11 @@ export function Loupe({
     const prev: Corner = tx(outline[(index + 3) % 4]);
     const next: Corner = tx(outline[(index + 1) % 4]);
     const mid: Corner = tx(c);
-    // Burgundy with a white halo, like the editor: visible on light and dark photos
+    // Copper with a white halo, like the editor: visible on light and dark photos
     ctx.lineJoin = 'round';
     for (const [width, color] of [
       [5, '#ffffff'],
-      [2.5, '#840623'],
+      [2.5, '#8a4e30'],
     ] as const) {
       ctx.lineWidth = width * dpr;
       ctx.strokeStyle = color;
@@ -82,7 +82,7 @@ export function Loupe({
       ctx.stroke();
     }
 
-    ctx.strokeStyle = 'rgba(16,24,40,.85)';
+    ctx.strokeStyle = 'rgba(42,28,20,.85)';
     ctx.lineWidth = 1 * dpr;
     ctx.beginPath();
     ctx.moveTo(mid.x - 10 * dpr, mid.y);

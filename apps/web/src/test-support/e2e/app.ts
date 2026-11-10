@@ -57,8 +57,8 @@ export function documentTiles(page: Page): Locator {
 }
 
 /**
- * Uploads photos through the file picker, as a user does: with the "Upload images" button of the
- * empty upload step, or the upload button of the carousel once it has documents. Waits until
+ * Uploads photos through the file picker, as a user does: with the "Enviar imagens" button of
+ * the empty upload step, or the upload button of the carousel once it has documents. Waits until
  * every photo is imported and its document detected.
  */
 export async function uploadImages(
@@ -83,9 +83,9 @@ export async function uploadImages(
   });
 }
 
-/** Clicks the button named exactly "Continue", which moves to the next step. */
+/** Clicks the button named exactly "Continuar" (Continue), which moves to the next step. */
 export async function clickContinue(page: Page): Promise<void> {
-  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.getByRole('button', { name: 'Continuar', exact: true }).click();
 }
 
 /**

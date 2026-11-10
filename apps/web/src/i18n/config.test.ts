@@ -8,7 +8,7 @@ import {
   MESSAGES,
   type Messages,
 } from './config';
-import { DEFAULT_LOCALE } from './locale';
+import { DEFAULT_LOCALE, FIXED_LOCALE } from './locale';
 import ptBR from './locales/pt-BR.json';
 
 /** Every JSON file in locales/, by language: the build makes a web app manifest for each one. */
@@ -96,12 +96,18 @@ describe('DEFAULT_LOCALE', (): void => {
     expect(MESSAGES[DEFAULT_LOCALE]).toBeDefined();
   });
 
-  it('is English, the language of crawlers, link previews and unsupported browsers', (): void => {
-    expect(DEFAULT_LOCALE).toBe('en');
+  it('is Brazilian Portuguese, the only language of the app, also for crawlers and link previews', (): void => {
+    expect(DEFAULT_LOCALE).toBe('pt-BR');
   });
 
   it('is the same value from locale.ts and config.ts', (): void => {
     expect(DEFAULT_LOCALE_FROM_CONFIG).toBe(DEFAULT_LOCALE);
+  });
+});
+
+describe('FIXED_LOCALE', (): void => {
+  it('is on: the app always uses DEFAULT_LOCALE, with no language picker', (): void => {
+    expect(FIXED_LOCALE).toBe(true);
   });
 });
 

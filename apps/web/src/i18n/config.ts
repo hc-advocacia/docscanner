@@ -6,7 +6,7 @@ import ptBR from './locales/pt-BR.json';
 /** Messages of one language. pt-BR is the reference shape: every language must have its keys. */
 export type Messages = typeof ptBR;
 
-export { DEFAULT_LOCALE, type Locale } from './locale';
+export { DEFAULT_LOCALE, FIXED_LOCALE, type Locale } from './locale';
 
 /** Messages of every supported language. Typed as `Messages`, so a missing key fails to compile. */
 export const MESSAGES: Record<Locale, Messages> = {

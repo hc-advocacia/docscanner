@@ -117,7 +117,7 @@ async function exportPngZip(page: Page): Promise<Map<string, Uint8Array>> {
   const file: DownloadedFile = await downloadFrom(page, async () => {
     await page.getByTestId('download').click();
   });
-  expect(file.name).toMatch(/^documents-\d{12}\.zip$/);
+  expect(file.name).toMatch(/^documentos-\d{12}\.zip$/);
   return readZip(file.data);
 }
 
@@ -157,18 +157,18 @@ test.describe('Upload step', (): void => {
   }): Promise<void> => {
     await openApp(page);
     await expect(uploadHeading(page)).toHaveText(
-      'Take photos or upload images of your documents',
+      'Fotografe ou envie imagens dos documentos',
     );
     await expect(page.getByTestId('step-1')).toBeDisabled();
 
     await uploadImages(page, ['invoice.jpg']);
 
-    await expect(uploadHeading(page)).toHaveText('You uploaded 1 image');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 1 imagem');
     await expect(page.getByTestId('upload-files')).toBeHidden();
     await expect(documentTiles(page)).toHaveCount(1);
-    await expect(page.getByTestId('doc-0')).toHaveAccessibleName('Document 1');
+    await expect(page.getByTestId('doc-0')).toHaveAccessibleName('Documento 1');
     await expect(page.getByTestId('remove-0')).toHaveAccessibleName(
-      'Remove document 1',
+      'Remover documento 1',
     );
     expect(await tileNumbers(page)).toEqual(['1']);
     await expect
@@ -196,9 +196,9 @@ test.describe('Upload step', (): void => {
 
     await uploadImages(page, ['receipt.jpg', 'invoice.jpg']);
 
-    await expect(uploadHeading(page)).toHaveText('You uploaded 2 images');
-    await expect(page.getByTestId('doc-0')).toHaveAccessibleName('Document 1');
-    await expect(page.getByTestId('doc-1')).toHaveAccessibleName('Document 2');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 2 imagens');
+    await expect(page.getByTestId('doc-0')).toHaveAccessibleName('Documento 1');
+    await expect(page.getByTestId('doc-1')).toHaveAccessibleName('Documento 2');
     expect(await tileNumbers(page)).toEqual(['1', '2']);
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
@@ -216,7 +216,7 @@ test.describe('Upload step', (): void => {
 
     await uploadImages(page, ['blank.png', 'receipt.jpg']);
 
-    await expect(uploadHeading(page)).toHaveText('You uploaded 3 images');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 3 imagens');
     expect(await tileNumbers(page)).toEqual(['1', '2', '3']);
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
@@ -249,7 +249,7 @@ test.describe('Upload step', (): void => {
     await expect(page.getByTestId('loading-overlay')).toBeVisible();
     await expect(page.getByTestId('step-0')).toBeDisabled();
     await expect(
-      page.getByRole('progressbar', { name: /image [12] of 2…$/ }),
+      page.getByRole('progressbar', { name: /imagem [12] de 2…$/ }),
     ).toBeVisible();
 
     await expect(documentTiles(page)).toHaveCount(2, { timeout: 60_000 });
@@ -260,10 +260,10 @@ test.describe('Upload step', (): void => {
     const { progressLabels, progressValues }: ProgressWindow =
       await recordedProgress(page);
     expect(progressLabels).toEqual([
-      'Uploading image 1 of 2…',
-      'Finding the document in image 1 of 2…',
-      'Uploading image 2 of 2…',
-      'Finding the document in image 2 of 2…',
+      'Enviando a imagem 1 de 2…',
+      'Detectando o documento na imagem 1 de 2…',
+      'Enviando a imagem 2 de 2…',
+      'Detectando o documento na imagem 2 de 2…',
     ]);
     // Opening and detecting each image are two of the five steps of the import. The last step,
     // putting the import together, may reach the screen in the same paint as the end (100)
@@ -288,8 +288,8 @@ test.describe('Upload step', (): void => {
     const { progressLabels, progressValues }: ProgressWindow =
       await recordedProgress(page);
     expect(progressLabels).toEqual([
-      'Uploading the image…',
-      'Finding the document in the image…',
+      'Enviando a imagem…',
+      'Detectando o documento na imagem…',
     ]);
     expect([
       [0, 33, 100],
@@ -320,7 +320,7 @@ test.describe('Upload step', (): void => {
     await expect(page.getByTestId('import-progress')).toBeHidden({
       timeout: 60_000,
     });
-    await expect(uploadHeading(page)).toHaveText('You uploaded 2 images');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 2 imagens');
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
       .toEqual(['receipt', 'invoice']);
@@ -371,7 +371,7 @@ test.describe('Upload step', (): void => {
       timeout: 60_000,
     });
     await expect(documentTiles(page)).toHaveCount(2);
-    await expect(uploadHeading(page)).toHaveText('You uploaded 2 images');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 2 imagens');
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
       .toEqual(['invoice', 'blank']);
@@ -391,11 +391,11 @@ test.describe('Upload step', (): void => {
 
     // One assertion for kind and message: the toast goes away by itself after a few seconds
     await expect(toastMessage(page, 'warning')).toHaveText(
-      '1 file could not be opened.',
+      '1 arquivo não pôde ser aberto.',
       { timeout: 60_000 },
     );
     await expect(documentTiles(page)).toHaveCount(1);
-    await expect(uploadHeading(page)).toHaveText('You uploaded 1 image');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 1 imagem');
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
       .toEqual(['invoice']);
@@ -413,7 +413,7 @@ test.describe('Upload step', (): void => {
     ]);
 
     await expect(toastMessage(page, 'error')).toHaveText(
-      'This file could not be opened. Upload a JPG, PNG, or WebP image.',
+      'Não foi possível abrir este arquivo. Envie uma imagem JPG, PNG ou WebP.',
       { timeout: 60_000 },
     );
     await expect(page.getByTestId('loading-overlay')).toBeHidden();
@@ -450,7 +450,7 @@ test.describe('Upload step', (): void => {
       { x: 0, y: 600 },
     ]);
     // The whole image is a valid crop
-    await expect(page.getByTestId('doc-0')).toHaveAccessibleName('Document 1');
+    await expect(page.getByTestId('doc-0')).toHaveAccessibleName('Documento 1');
     await expect(page.getByTestId('crop')).toBeEnabled();
   });
 });
@@ -467,11 +467,11 @@ test.describe('Removing documents', (): void => {
     await page.getByTestId('remove-1').click();
 
     await expect(documentTiles(page)).toHaveCount(2);
-    await expect(uploadHeading(page)).toHaveText('You uploaded 2 images');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 2 imagens');
     expect(await tileNumbers(page)).toEqual(['1', '2']);
-    await expect(page.getByTestId('doc-1')).toHaveAccessibleName('Document 2');
+    await expect(page.getByTestId('doc-1')).toHaveAccessibleName('Documento 2');
     await expect(page.getByTestId('remove-1')).toHaveAccessibleName(
-      'Remove document 2',
+      'Remover documento 2',
     );
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
@@ -490,12 +490,12 @@ test.describe('Removing documents', (): void => {
     await expect
       .poll(async (): Promise<string[]> => uploadedPhotos(page))
       .toEqual(['receipt']);
-    await expect(uploadHeading(page)).toHaveText('You uploaded 1 image');
+    await expect(uploadHeading(page)).toHaveText('Você enviou 1 imagem');
     await page.getByTestId('remove-0').click();
 
     await expect(documentTiles(page)).toHaveCount(0);
     await expect(uploadHeading(page)).toHaveText(
-      'Take photos or upload images of your documents',
+      'Fotografe ou envie imagens dos documentos',
     );
     await expect(page.getByTestId('upload-files')).toBeVisible();
     await expect(page.getByTestId('upload-camera')).toBeVisible();
@@ -734,7 +734,7 @@ test.describe('Carousel in the later steps', (): void => {
       'aria-current',
       'true',
     );
-    await expect(page.getByTestId('doc-1')).toHaveAccessibleName('Document 2');
+    await expect(page.getByTestId('doc-1')).toHaveAccessibleName('Documento 2');
     expect(await tileNumbers(page)).toEqual(['1', '2']);
     await expect
       .poll(async (): Promise<string> => photoInEditor(page))
@@ -758,7 +758,7 @@ test.describe('Carousel in the later steps', (): void => {
     await page.getByTestId('remove-0').click();
     await expect(page.getByTestId('upload-files')).toBeVisible();
     await expect(uploadHeading(page)).toHaveText(
-      'Take photos or upload images of your documents',
+      'Fotografe ou envie imagens dos documentos',
     );
     await expect(page.getByTestId('step-0')).toHaveAttribute(
       'aria-current',
@@ -781,7 +781,7 @@ test.describe('Carousel in the later steps', (): void => {
     await expect(page.getByTestId('upload-files')).toBeVisible();
     await expect(documentTiles(page)).toHaveCount(0);
     await expect(uploadHeading(page)).toHaveText(
-      'Take photos or upload images of your documents',
+      'Fotografe ou envie imagens dos documentos',
     );
     await expect(page.getByTestId('step-0')).toHaveAttribute(
       'aria-current',
@@ -868,7 +868,7 @@ test.describe('Carousel in the later steps', (): void => {
     await uploadImages(page, ['invoice.jpg', 'receipt.jpg']);
     await goToExport(page);
     await expect(page.getByTestId('result-size')).toContainText(
-      'Document 1 of 2',
+      'Documento 1 de 2',
     );
 
     // The receipt goes before the invoice, which stays on display
@@ -883,7 +883,7 @@ test.describe('Carousel in the later steps', (): void => {
       'true',
     );
     await expect(page.getByTestId('result-size')).toContainText(
-      'Document 2 of 2',
+      'Documento 2 de 2',
     );
 
     const zip: Map<string, Uint8Array> = await exportPngZip(page);

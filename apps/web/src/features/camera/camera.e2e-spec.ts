@@ -151,12 +151,12 @@ test.describe('camera, with permission', (): void => {
       'step',
     );
     await expect(
-      page.getByRole('status').filter({ hasText: 'Frame the document' }),
+      page.getByRole('status').filter({ hasText: 'Enquadre o documento' }),
     ).toBeVisible();
     // Nothing to finish yet
     const done: Locator = page.getByTestId('camera-done');
     await expect(done).toBeDisabled();
-    await expect(done).toHaveAccessibleName('Done');
+    await expect(done).toHaveAccessibleName('Concluir');
     const playing: boolean = await page
       .getByTestId('camera-video')
       .evaluate(
@@ -177,20 +177,20 @@ test.describe('camera, with permission', (): void => {
 
     await takePhoto(page, 1);
     await expect(
-      page.getByText('1 photo · take the next one or finish'),
+      page.getByText('1 foto · tire a próxima ou conclua'),
     ).toBeVisible();
     await expect(page.getByTestId('camera-done')).toHaveAccessibleName(
-      'Done with 1 photo',
+      'Concluir com 1 foto',
     );
     // The camera stays open for the next photo
     await expect(page.getByTestId('shutter')).toBeEnabled();
 
     await takePhoto(page, 2);
     await expect(
-      page.getByText('2 photos · take the next one or finish'),
+      page.getByText('2 fotos · tire a próxima ou conclua'),
     ).toBeVisible();
     await expect(page.getByTestId('camera-done')).toHaveAccessibleName(
-      'Done with 2 photos',
+      'Concluir com 2 fotos',
     );
 
     await page.getByTestId('camera-done').click();
@@ -202,7 +202,7 @@ test.describe('camera, with permission', (): void => {
       timeout: 60_000,
     });
     await expect(
-      page.getByRole('heading', { name: 'You uploaded 2 images' }),
+      page.getByRole('heading', { name: 'Você enviou 2 imagens' }),
     ).toBeVisible();
     await expect(page.getByTestId('step-0')).toHaveAttribute(
       'aria-current',
@@ -236,7 +236,7 @@ test.describe('camera, with permission', (): void => {
     await page.getByTestId('upload-camera').click();
     await expectCameraReady(page);
 
-    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await page.getByRole('button', { name: 'Voltar', exact: true }).click();
 
     await expect(page.getByTestId('camera-video')).toBeHidden();
     await expect(page.getByTestId('upload-files')).toBeVisible();
@@ -255,7 +255,7 @@ test.describe('camera, with permission', (): void => {
     await takePhoto(page, 1);
     await watchForImports(page);
 
-    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await page.getByRole('button', { name: 'Voltar', exact: true }).click();
 
     await expect(page.getByTestId('upload-files')).toBeVisible();
     // Opening the camera again starts from zero photos; by the time it plays, an import started
@@ -265,11 +265,11 @@ test.describe('camera, with permission', (): void => {
     await expect(page.getByTestId('camera-done')).toBeDisabled();
     await expect(page.locator('.camera-done-count')).toHaveCount(0);
     await expect(
-      page.getByRole('status').filter({ hasText: 'Frame the document' }),
+      page.getByRole('status').filter({ hasText: 'Enquadre o documento' }),
     ).toBeVisible();
     expect(await importStarted(page)).toBe(false);
 
-    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await page.getByRole('button', { name: 'Voltar', exact: true }).click();
     await expect(page.getByTestId('upload-files')).toBeVisible();
     await expect(documentTiles(page)).toHaveCount(0);
     expect(await importStarted(page)).toBe(false);
@@ -313,7 +313,7 @@ test.describe('camera, with permission', (): void => {
       expect(await cameraTracks(page)).toEqual(['video:live']);
 
       if (closing === 'Back') {
-        await page.getByRole('button', { name: 'Back', exact: true }).click();
+        await page.getByRole('button', { name: 'Voltar', exact: true }).click();
       } else {
         await takePhoto(page, 1);
         await page.getByTestId('camera-done').click();
@@ -405,7 +405,7 @@ test.describe('camera, with permission', (): void => {
 
     await page.getByTestId('add-camera').click();
     await expectCameraReady(page);
-    await page.getByRole('button', { name: 'Back', exact: true }).click();
+    await page.getByRole('button', { name: 'Voltar', exact: true }).click();
 
     await expect(page.getByTestId('corner-editor')).toBeVisible();
     await expect(page.getByTestId('step-1')).toHaveAttribute(
@@ -439,17 +439,17 @@ test.describe('camera errors and fallback', (): void => {
       name: 'NotAllowedError',
       reason: 'access is denied',
       message:
-        'Camera access was denied. Allow it in your browser settings and try again.',
+        'O acesso à câmera foi negado. Libere a permissão nas configurações do navegador e tente de novo.',
     },
     {
       name: 'NotFoundError',
       reason: 'there is no camera',
-      message: 'No camera found on this device.',
+      message: 'Nenhuma câmera encontrada neste dispositivo.',
     },
     {
       name: 'NotReadableError',
       reason: 'the camera fails to start',
-      message: 'The camera could not be opened.',
+      message: 'Não foi possível abrir a câmera.',
     },
   ];
 
@@ -471,10 +471,10 @@ test.describe('camera errors and fallback', (): void => {
       await expect(page.getByTestId('shutter')).toBeDisabled();
       await expect(page.getByTestId('camera-done')).toBeDisabled();
       // No framing hint over a camera that does not play
-      await expect(page.getByText('Frame the document')).toBeHidden();
+      await expect(page.getByText('Enquadre o documento')).toBeHidden();
 
       // Back still leads to the upload options, with nothing imported
-      await page.getByRole('button', { name: 'Back', exact: true }).click();
+      await page.getByRole('button', { name: 'Voltar', exact: true }).click();
       await expect(page.getByTestId('upload-files')).toBeVisible();
       await expect(documentTiles(page)).toHaveCount(0);
     });
@@ -510,7 +510,7 @@ test.describe('camera errors and fallback', (): void => {
       timeout: 60_000,
     });
     await expect(
-      page.getByRole('heading', { name: 'You uploaded 1 image' }),
+      page.getByRole('heading', { name: 'Você enviou 1 imagem' }),
     ).toBeVisible();
     // The in-app camera never opened, so no camera error either
     await expect(page.getByTestId('toast')).toHaveCount(0);

@@ -115,7 +115,7 @@
 
 .shutter:not(:disabled):active {
   transform: scale(0.94);
-  background: #d9dce1;
+  background: var(--line);
 }
 
 .shutter:disabled {

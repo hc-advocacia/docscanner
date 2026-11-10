@@ -50,7 +50,7 @@ const PNG_SIGNATURE: number[] = [
 
 /** The toast that confirms a file was downloaded. */
 function savedToast(page: Page): Locator {
-  return page.getByTestId('toast').filter({ hasText: 'File downloaded' });
+  return page.getByTestId('toast').filter({ hasText: 'Arquivo baixado' });
 }
 
 /** Picks the page of the PDF: A4, Letter, or the size of the document (`image`). */
@@ -58,7 +58,7 @@ async function choosePage(
   page: Page,
   format: 'a4' | 'letter' | 'image',
 ): Promise<void> {
-  await page.getByLabel('Page format').selectOption(format);
+  await page.getByLabel('Formato da página').selectOption(format);
 }
 
 /** Fills the masked margins field, in centimeters, with the 2 decimal places it shows. */
@@ -109,7 +109,7 @@ async function expectPagePreview(
 async function expectPlainPreview(page: Page, render: Size): Promise<void> {
   await expect(preview(page)).not.toHaveAttribute('data-page-format');
   await expect(preview(page)).toHaveAccessibleName(
-    'Preview of document 1, cropped',
+    'Prévia do documento 1, recortado',
   );
   await expect
     .poll(async (): Promise<Size> => previewCanvasSize(page))
@@ -128,7 +128,7 @@ async function documentSizes(page: Page): Promise<Size[]> {
 }
 
 /**
- * Checks a batch file name: `documents-<UTC date and time>.<extension>`, with a stamp between the
+ * Checks a batch file name: `documentos-<UTC date and time>.<extension>`, with a stamp between the
  * `before` and `after` ones taken around the export.
  */
 function expectBatchName(
@@ -138,7 +138,7 @@ function expectBatchName(
   after: string,
 ): void {
   const match: RegExpExecArray | null = new RegExp(
-    `^documents-(\\d{12})\\.${extension}$`,
+    `^documentos-(\\d{12})\\.${extension}$`,
   ).exec(name);
   expect(match, name).not.toBeNull();
   const stamp: string = match?.[1] ?? '';
@@ -156,7 +156,7 @@ test.describe('Export step', (): void => {
     await expect(
       page.getByRole('radio', { name: 'PDF', exact: true }),
     ).toBeChecked();
-    await expect(page.getByLabel('Page format')).toHaveValue('a4');
+    await expect(page.getByLabel('Formato da página')).toHaveValue('a4');
     await expect(page.getByTestId('margins')).toHaveValue('0.00');
 
     const file: DownloadedFile = await exportFile(page);
@@ -172,7 +172,7 @@ test.describe('Export step', (): void => {
     // The render at full resolution, not scaled down to fit the page
     expect(await pdfImageSizes(file.data)).toEqual([size]);
 
-    await expect(savedToast(page)).toHaveText('File downloaded: invoice.pdf');
+    await expect(savedToast(page)).toHaveText('Arquivo baixado: invoice.pdf');
     await expect(savedToast(page)).toHaveAttribute('data-kind', 'success');
     // The button comes back once the progress bar is done
     await expect(page.getByTestId('download')).toBeEnabled();
@@ -189,7 +189,7 @@ test.describe('Export step', (): void => {
     // The portrait invoice on a portrait A4 page, the default
     await expect(preview(page)).toHaveAttribute('data-page-format', 'a4');
     await expect(preview(page)).toHaveAccessibleName(
-      'Preview of document 1 as a PDF (A4)',
+      'Prévia do documento 1 em PDF (A4)',
     );
     await expectPagePreview(page, A4, size);
     // The status keeps the size of the render, which the PDF embeds
@@ -198,7 +198,7 @@ test.describe('Export step', (): void => {
     await choosePage(page, 'letter');
     await expect(preview(page)).toHaveAttribute('data-page-format', 'letter');
     await expect(preview(page)).toHaveAccessibleName(
-      'Preview of document 1 as a PDF (Letter)',
+      'Prévia do documento 1 em PDF (Carta)',
     );
     await expectPagePreview(page, LETTER, size);
 
@@ -211,7 +211,7 @@ test.describe('Export step', (): void => {
       size,
     );
     await expect(preview(page)).toHaveAccessibleName(
-      'Preview of document 1 as a PDF (Document size)',
+      'Prévia do documento 1 em PDF (Tamanho do documento)',
     );
 
     // PNG and JPG files are the render itself
@@ -311,7 +311,7 @@ test.describe('Export step', (): void => {
   }): Promise<void> => {
     await openExport(page, ['invoice.jpg']);
     const progress: string = '[data-testid="export-progress"]';
-    const labelled: string = `${progress} [role="progressbar"][aria-label="Creating file…"]`;
+    const labelled: string = `${progress} [role="progressbar"][aria-label="Gerando arquivo…"]`;
     const full: string = `${progress} [role="progressbar"][aria-valuenow="100"]`;
     const buttonDuringProgress: string = `body:has(${progress}) [data-testid="download"]`;
 
@@ -325,7 +325,7 @@ test.describe('Export step', (): void => {
     const file: DownloadedFile = await exportFile(page);
 
     expect(file.name).toBe('invoice.pdf');
-    await expect(savedToast(page)).toHaveText('File downloaded: invoice.pdf');
+    await expect(savedToast(page)).toHaveText('Arquivo baixado: invoice.pdf');
     // The button comes back once the bar is done
     await expect(page.locator(progress)).toHaveCount(0);
     await expect(page.getByTestId('download')).toBeEnabled();
@@ -382,7 +382,7 @@ test.describe('Export step', (): void => {
 
     // Back to Adjust to turn the portrait invoice sideways
     await page.getByTestId('step-2').click();
-    await page.getByRole('button', { name: 'Right', exact: true }).click();
+    await page.getByRole('button', { name: 'Direita', exact: true }).click();
     const landscape: Size = { width: size.height, height: size.width };
     await expect(resultStatus(page)).toHaveText(sizeText(landscape), {
       timeout: 30_000,
@@ -517,7 +517,7 @@ test.describe('Export step', (): void => {
     const [invoice, receipt] = await documentSizes(page);
     expect(invoice).not.toEqual(receipt);
     await expect(
-      page.getByRole('radio', { name: 'One PDF with everything', exact: true }),
+      page.getByRole('radio', { name: 'Um PDF com tudo', exact: true }),
     ).toBeChecked();
 
     // Pages the size of each document, to tell them apart
@@ -532,13 +532,13 @@ test.describe('Export step', (): void => {
     expectPageSize(pdf.pageSizes[0], documentSizePage(invoice));
     expectPageSize(pdf.pageSizes[1], documentSizePage(receipt));
     expect(await pdfImageSizes(file.data)).toEqual([invoice, receipt]);
-    await expect(savedToast(page)).toHaveText(`File downloaded: ${file.name}`);
+    await expect(savedToast(page)).toHaveText(`Arquivo baixado: ${file.name}`);
 
     // The receipt goes first: the pages follow
     await showDocument(page, 0);
     await page.getByTestId('doc-0').press('Alt+ArrowRight');
     await expect(resultStatus(page)).toHaveText(
-      `Document 2 of 2 · ${sizeText(invoice)}`,
+      `Documento 2 de 2 · ${sizeText(invoice)}`,
     );
     const reordered: DownloadedFile = await exportFile(page);
 
@@ -557,9 +557,9 @@ test.describe('Export step', (): void => {
     await openExport(page, ['invoice.jpg', 'receipt.jpg']);
     const sizes: Size[] = await documentSizes(page);
 
-    await choose(page, 'One PDF per document');
+    await choose(page, 'Um PDF por documento');
     await expect(
-      page.getByText('The PDFs are downloaded together, in a ZIP file.'),
+      page.getByText('Os PDFs são baixados juntos, num arquivo ZIP.'),
     ).toBeVisible();
     const before: string = fileStamp();
     const file: DownloadedFile = await exportFile(page);
@@ -577,7 +577,7 @@ test.describe('Export step', (): void => {
       const [placement] = await pdfImagePlacements(pdfData);
       expectPlacement(placement, expectedPlacement(sizes[index], A4, 0));
     }
-    await expect(savedToast(page)).toHaveText(`File downloaded: ${file.name}`);
+    await expect(savedToast(page)).toHaveText(`Arquivo baixado: ${file.name}`);
   });
 
   test('exports a PNG the size of the result, without PDF options', async ({
@@ -589,7 +589,7 @@ test.describe('Export step', (): void => {
     const size: Size = await resultSize(page);
 
     await choose(page, 'PNG');
-    await expect(page.getByLabel('Page format')).toHaveCount(0);
+    await expect(page.getByLabel('Formato da página')).toHaveCount(0);
     await expect(page.getByTestId('margins')).toHaveCount(0);
     // A PNG shows the render itself, not on a page
     await expect(preview(page)).not.toHaveAttribute('data-page-format');
@@ -604,7 +604,7 @@ test.describe('Export step', (): void => {
     const decoded: DecodedImage = await decodeImage(page, file.data);
     expect(decoded.maxChannelSpread).toBeGreaterThan(60);
     expect(decoded.checksum).toBe(shown.checksum);
-    await expect(savedToast(page)).toHaveText('File downloaded: invoice.png');
+    await expect(savedToast(page)).toHaveText('Arquivo baixado: invoice.png');
   });
 
   test('exports a JPG the size of the result', async ({
@@ -625,7 +625,7 @@ test.describe('Export step', (): void => {
     expect(
       (await decodeImage(page, file.data)).maxChannelSpread,
     ).toBeGreaterThan(60);
-    await expect(savedToast(page)).toHaveText('File downloaded: invoice.jpg');
+    await expect(savedToast(page)).toHaveText('Arquivo baixado: invoice.jpg');
   });
 
   test('exports several documents as PNG or JPG files in a ZIP, numbered in carousel order', async ({
@@ -638,11 +638,11 @@ test.describe('Export step', (): void => {
 
     await choose(page, 'PNG');
     await expect(
-      page.getByText('Each document becomes a file, all in a ZIP.'),
+      page.getByText('Cada documento vira um arquivo, todos num ZIP.'),
     ).toBeVisible();
     // Only PDFs can be combined
     await expect(
-      page.getByRole('radio', { name: 'One PDF with everything' }),
+      page.getByRole('radio', { name: 'Um PDF com tudo' }),
     ).toHaveCount(0);
     const before: string = fileStamp();
     const pngs: DownloadedFile = await exportFile(page);
@@ -663,7 +663,7 @@ test.describe('Export step', (): void => {
     await choose(page, 'JPG');
     const jpgs: DownloadedFile = await exportFile(page);
 
-    expect(jpgs.name).toMatch(/^documents-\d{12}\.zip$/);
+    expect(jpgs.name).toMatch(/^documentos-\d{12}\.zip$/);
     const jpgZip: Map<string, Uint8Array> = readZip(jpgs.data);
     expect([...jpgZip.keys()]).toEqual(['1-invoice.jpg', '2-receipt.jpg']);
     expect(readImage(jpgZip.get('1-invoice.jpg') ?? new Uint8Array())).toEqual({
@@ -687,13 +687,13 @@ test.describe('Export step', (): void => {
     // Grayscale and strong sharpness (so noise reduction) applied to all; only the invoice rotated
     await page.getByTestId('step-2').click();
     await showDocument(page, 0);
-    await choose(page, 'Grayscale');
-    await choose(page, 'Strong');
-    await page.getByRole('button', { name: 'Right', exact: true }).click();
+    await choose(page, 'Cinza');
+    await choose(page, 'Forte');
+    await page.getByRole('button', { name: 'Direita', exact: true }).click();
     await page.getByTestId('apply-all').click();
     await expect(
-      page.getByTestId('toast').filter({ hasText: 'adjustments' }),
-    ).toHaveText('The adjustments were applied to all 2 documents.');
+      page.getByTestId('toast').filter({ hasText: 'ajustes' }),
+    ).toHaveText('Os ajustes foram aplicados aos 2 documentos.');
     await page.getByTestId('continue').click();
     await expect(page.getByTestId('step-3')).toHaveAttribute(
       'aria-current',
@@ -755,14 +755,14 @@ test.describe('Export step', (): void => {
     const pdf: DownloadedFile = await exportFile(page);
     expect(pdf.name).toBe('Contract March.final.pdf');
     await expect(savedToast(page)).toHaveText(
-      'File downloaded: Contract March.final.pdf',
+      'Arquivo baixado: Contract March.final.pdf',
     );
 
     await choose(page, 'JPG');
     const jpg: DownloadedFile = await exportFile(page);
     expect(jpg.name).toBe('Contract March.final.jpg');
     await expect(savedToast(page)).toHaveText(
-      'File downloaded: Contract March.final.jpg',
+      'Arquivo baixado: Contract March.final.jpg',
     );
   });
 
@@ -773,14 +773,16 @@ test.describe('Export step', (): void => {
   }): Promise<void> => {
     await openExport(page, ['invoice.jpg', 'receipt.jpg']);
     // Options away from the defaults, which a new scan must not keep
-    await choose(page, 'One PDF per document');
+    await choose(page, 'Um PDF por documento');
     await choosePage(page, 'letter');
     await setMargins(page, 0.5);
     await choose(page, 'PNG');
     await exportFile(page);
     await expect(savedToast(page)).toBeVisible();
 
-    await page.getByRole('button', { name: 'New scan', exact: true }).click();
+    await page
+      .getByRole('button', { name: 'Nova digitalização', exact: true })
+      .click();
 
     await expect(page.getByTestId('step-0')).toHaveAttribute(
       'aria-current',
@@ -788,7 +790,7 @@ test.describe('Export step', (): void => {
     );
     await expect(page.getByTestId('upload-files')).toBeVisible();
     await expect(
-      page.getByText('Take photos or upload images of your documents'),
+      page.getByText('Fotografe ou envie imagens dos documentos'),
     ).toBeVisible();
     await expect(documentTiles(page)).toHaveCount(0);
     await expect(page.getByTestId('toast')).toHaveCount(0);
@@ -802,7 +804,7 @@ test.describe('Export step', (): void => {
     await clickContinue(page);
     await resultSize(page);
     await expect(
-      page.getByRole('radio', { name: 'Color', exact: true }),
+      page.getByRole('radio', { name: 'Colorido', exact: true }),
     ).toBeChecked();
     await page.getByTestId('continue').click();
     await expect(page.getByTestId('step-3')).toHaveAttribute(
@@ -813,12 +815,12 @@ test.describe('Export step', (): void => {
       page.getByRole('radio', { name: 'PDF', exact: true }),
     ).toBeChecked();
     await expect(
-      page.getByRole('radio', { name: 'One PDF with everything', exact: true }),
+      page.getByRole('radio', { name: 'Um PDF com tudo', exact: true }),
     ).toBeChecked();
-    await expect(page.getByLabel('Page format')).toHaveValue('a4');
+    await expect(page.getByLabel('Formato da página')).toHaveValue('a4');
     await expect(page.getByTestId('margins')).toHaveValue('0.00');
     const file: DownloadedFile = await exportFile(page);
-    expect(file.name).toMatch(/^documents-\d{12}\.pdf$/);
+    expect(file.name).toMatch(/^documentos-\d{12}\.pdf$/);
     const pdf: PdfInfo = await readPdf(file.data);
     expect(pdf.pageSizes).toHaveLength(2);
     for (const pageSize of pdf.pageSizes) expectPageSize(pageSize, A4);

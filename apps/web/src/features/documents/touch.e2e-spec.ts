@@ -236,7 +236,7 @@ test.describe('Touch, on a phone', (): void => {
       .toEqual(['receipt', 'invoice', 'blank']);
     expect(await tileNumbers(page)).toEqual(['1', '2', '3']);
     await expect(page.getByTestId('remove-1')).toHaveAccessibleName(
-      'Remove document 2',
+      'Remover documento 2',
     );
   });
 

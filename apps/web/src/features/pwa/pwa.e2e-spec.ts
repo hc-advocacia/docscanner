@@ -248,8 +248,8 @@ test.describe('web app manifests', (): void => {
       expect(manifest.id).toBe('./');
       expect(manifest.start_url).toBe('./');
       expect(manifest.scope).toBe('./');
-      expect(manifest.name).toBe('DocScanify');
-      expect(manifest.short_name).toBe('DocScanify');
+      expect(manifest.name).toBe('DocScanner');
+      expect(manifest.short_name).toBe('DocScanner');
       expect(manifest.display).toBe('standalone');
       expect(manifest.icons).toEqual(ICONS);
     });
@@ -260,7 +260,7 @@ test.describe('web app manifests', (): void => {
   }: {
     request: APIRequestContext;
   }): Promise<void> => {
-    const manifestUrl: string = `${APP_ORIGIN}/manifest.en.webmanifest`;
+    const manifestUrl: string = `${APP_ORIGIN}/manifest.pt-BR.webmanifest`;
     const manifest: WebManifest = (await (
       await request.get(manifestUrl)
     ).json()) as WebManifest;
@@ -323,7 +323,7 @@ test.describe('installed app', (): void => {
     await expect(page.getByTestId('upload-files')).toBeVisible();
     await expect(
       page.getByRole('heading', {
-        name: 'Take photos or upload images of your documents',
+        name: 'Fotografe ou envie imagens dos documentos',
       }),
     ).toBeVisible();
 
@@ -382,7 +382,7 @@ test.describe('new version notice', (): void => {
   function updateToast(page: Page): Locator {
     return page
       .getByTestId('toast')
-      .filter({ hasText: 'A new version is available.' });
+      .filter({ hasText: 'Nova versão disponível.' });
   }
 
   test('a new service worker shows the notice, and Update reloads into the new version', async ({
@@ -400,8 +400,8 @@ test.describe('new version notice', (): void => {
     const toast: Locator = updateToast(page);
     await expect(toast).toBeVisible();
     await expect(toast).toHaveAttribute('data-kind', 'info');
-    await expect(toast.locator('p')).toHaveText('A new version is available.');
-    await expect(toast.getByTestId('toast-action')).toHaveText('Update');
+    await expect(toast.locator('p')).toHaveText('Nova versão disponível.');
+    await expect(toast.getByTestId('toast-action')).toHaveText('Atualizar');
     expect(server.workerRequests()).toBeGreaterThan(requestsBefore);
     // The new version waits for the user: the page is still on the old one
     expect(await workerState(page)).toEqual({
@@ -452,9 +452,9 @@ test.describe('new version notice', (): void => {
 
     const toast: Locator = updateToast(page);
     await expect(toast.locator('p')).toHaveText(
-      'A new version is available. Updating now discards the open documents.',
+      'Nova versão disponível. Atualizar agora descarta os documentos abertos.',
     );
-    await expect(toast.getByTestId('toast-action')).toHaveText('Update');
+    await expect(toast.getByTestId('toast-action')).toHaveText('Atualizar');
     // The notice does not reload by itself: the documents are still there
     await expect(documentTiles(page)).toHaveCount(1);
   });
@@ -471,7 +471,7 @@ test.describe('new version notice', (): void => {
     const toast: Locator = updateToast(page);
     await expect(toast).toBeVisible();
 
-    await toast.getByRole('button', { name: 'Close message' }).click();
+    await toast.getByRole('button', { name: 'Fechar aviso' }).click();
 
     await expect(toast).toHaveCount(0);
     await expect(documentTiles(page)).toHaveCount(1);
@@ -483,32 +483,6 @@ test.describe('new version notice', (): void => {
     });
   });
 
-  test('the notice follows the language of the app', async ({
-    page,
-  }: {
-    page: Page;
-  }): Promise<void> => {
-    await installApp(page);
-    await page.getByTestId('language').click();
-    await page.getByTestId('language-pt-BR').click();
-
-    server.publishNewVersion();
-    await checkForUpdate(page);
-
-    const toast: Locator = page.getByTestId('toast');
-    await expect(toast.locator('p')).toHaveText('Nova versão disponível.');
-    await expect(toast.getByTestId('toast-action')).toHaveText('Atualizar');
-
-    // Switching while it shows translates it in place
-    await page.getByTestId('language').click();
-    await page.getByTestId('language-es').click();
-    await expect(toast).toHaveCount(1);
-    await expect(toast.locator('p')).toHaveText(
-      'Hay una nueva versión disponible.',
-    );
-    await expect(toast.getByTestId('toast-action')).toHaveText('Actualizar');
-  });
-
   test('documents opened while the notice shows add the warning to it', async ({
     page,
   }: {
@@ -518,13 +492,13 @@ test.describe('new version notice', (): void => {
     server.publishNewVersion();
     await checkForUpdate(page);
     const toast: Locator = updateToast(page);
-    await expect(toast.locator('p')).toHaveText('A new version is available.');
+    await expect(toast.locator('p')).toHaveText('Nova versão disponível.');
 
     await uploadImages(page, ['invoice.jpg']);
 
     await expect(toast).toHaveCount(1);
     await expect(toast.locator('p')).toHaveText(
-      'A new version is available. Updating now discards the open documents.',
+      'Nova versão disponível. Atualizar agora descarta os documentos abertos.',
     );
   });
 

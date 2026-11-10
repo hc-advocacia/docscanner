@@ -1,26 +1,45 @@
 /*
   Design tokens
-  - Light and neutral: the document is the hero; the interface stays in the background.
-  - Canvas: very light gray, where the document rests. Pure white for panels and the top bar.
-  - Burgundy (the logo color): the only action color. Primary button, current step, crop
-    corners, focus.
+  - Warm and light: cream surfaces and copper accents, like a law office letterhead. The document
+    is still the hero; the interface stays in the background.
+  - Canvas: deeper cream, where the document rests. Lighter cream for panels and the top bar,
+    white for fields and raised controls.
+  - Copper (the logo color): the only action color. Primary button, current step, crop corners,
+    focus. The primary button uses the bronze gradient of the logo.
+  - Serif display type for the brand and titles; a light geometric sans for everything else.
   - The camera is the exception: it stays dark, like any camera app.
 */
 :root {
-  --canvas: #eef0f3;
-  --surface: #ffffff;
-  --surface-sunken: #f2f4f7;
-  --line: #e4e7ec;
-  --line-strong: #d0d5dd;
-  --text: #101828;
-  --text-2: #475467;
-  --muted: #667085;
+  --canvas: #f3ebe2;
+  --surface: #fcf8f3;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f3ebe2;
+  --line: #e6dacd;
+  --line-strong: #d4c1af;
+  --text: #2a1c14;
+  --text-2: #5e4a3d;
+  --muted: #7c6557;
+  --text-disabled: #b6a293;
 
-  --brand: #840623;
-  --brand-hover: #6c051d;
-  --brand-press: #57041a;
-  --brand-soft: #fbeef1;
-  --brand-ring: rgba(132, 6, 35, 0.2);
+  --brand: #8a4e30;
+  --brand-hover: #74401f;
+  --brand-press: #5e3a26;
+  --brand-accent: #b06a3e;
+  --brand-light: #e0a877;
+  --brand-soft: #f6e8dc;
+  --brand-ring: rgba(176, 106, 62, 0.28);
+  --brand-gradient: linear-gradient(
+    135deg,
+    #b06a3e 0%,
+    #8a4e30 50%,
+    #5e3a26 100%
+  );
+  --brand-gradient-hover: linear-gradient(
+    135deg,
+    #9c5c35 0%,
+    #74401f 50%,
+    #4d2f1f 100%
+  );
   --on-brand: #ffffff;
 
   --danger: #b42318;
@@ -32,19 +51,24 @@
 
   --camera: #0c0d10;
 
-  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-sm: 0 1px 2px rgba(58, 36, 24, 0.07);
   --shadow-md:
-    0 6px 16px -4px rgba(16, 24, 40, 0.1), 0 2px 4px -2px rgba(16, 24, 40, 0.05);
+    0 8px 20px -6px rgba(58, 36, 24, 0.14),
+    0 2px 4px -2px rgba(58, 36, 24, 0.06);
+  --shadow-brand: 0 10px 22px -12px rgba(138, 78, 48, 0.75);
   --shadow-doc:
-    0 16px 40px -12px rgba(16, 24, 40, 0.22), 0 2px 6px rgba(16, 24, 40, 0.06);
+    0 24px 50px -24px rgba(58, 36, 24, 0.4), 0 2px 6px rgba(58, 36, 24, 0.08);
 
-  --font: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    'Cormorant Garamond Variable', Georgia, 'Times New Roman', serif;
   --fs-small: 0.8125rem;
   --fs-body: 0.9375rem;
   --fs-title: 1.125rem;
   --fs-display: 1.625rem;
 
   --radius-control: 10px;
+  --radius-pill: 999px;
   --radius-card: 20px;
   --panel-w: 352px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
